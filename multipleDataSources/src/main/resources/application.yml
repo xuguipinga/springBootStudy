@@ -1,0 +1,72 @@
+
+###################  自定义配置  ###################
+example:
+  muti-datasource-open: false #是否开启多数据源(true/false)
+  redis-multi-open: false
+###################  spring配置  ###################
+spring:
+  profiles:
+    active: dev
+
+###################  mybatis-plus配置  ###################
+mybatis-plus:
+  mapper-locations: classpath*:com/example/dome/common/dao/repository/mapping/*.xml
+  typeAliasesPackage: >
+    com.example.dome.common.dao.entity
+  global-config:
+    id-type: 0  # 0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true #配置的缓存的全局开关
+    lazyLoadingEnabled: true #延时加载的开关
+    multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
+logging:
+  level:
+    org.springframework.web.servlet: ERROR
+
+---
+
+#####################################################################
+########################  开发环境profile  ##########################
+#####################################################################
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/expo0917?serverTimezone=UTC&useSSL=false&autoReconnect=true&tinyInt1isBit=false&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+
+#多数据源
+biz:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/xm001dev?serverTimezone=UTC&useSSL=false&autoReconnect=true&tinyInt1isBit=false&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+
+logging:
+  level:
+    ROOT: INFO
+    com:
+      xncoding: DEBUG
+  file: D:/logs/app.log
+server:
+  port: 8987
+
+---
+spring:
+  redis:
+    host: 192.168.11.200
+    porl: 6379
+    database: 0
+    password:
+    timeout: 6000ms
+    jedis:
+      pool:
+        max-active: 1000    # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms    # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+  cache:
+    type: none
